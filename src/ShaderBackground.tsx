@@ -1,14 +1,13 @@
 import { useEffect, useRef } from 'react'
 
 /*
- * TEMPORARY original-fidelity build for user confirmation:
+ * Original shader confirmed by the user, now with slowdown + blur only:
  * nasana's "glowingMarblingBlack" on Shadertoy
- * (https://www.shadertoy.com/view/WtdXR8) at full speed, full resolution,
- * no blur, no opacity reduction, no white veil. The faint treatment
- * (slowed + blurred + veiled) is deliberately removed here and will be
- * re-applied only after the user confirms this matches the original.
- * If WebGL is unavailable, or the user prefers reduced motion, the page
- * falls back to a static frame / plain background.
+ * (https://www.shadertoy.com/view/WtdXR8), slowed to 0.22x and blurred
+ * in CSS. No opacity reduction, no white veil, white text and the black
+ * marble colours are kept as confirmed. If WebGL is unavailable, or the
+ * user prefers reduced motion, the page falls back to a static frame /
+ * plain background.
  */
 
 const VERT = `
@@ -22,8 +21,8 @@ uniform vec2 uRes;
 uniform float uTime;
 void main() {
   vec2 uv = (2.0 * gl_FragCoord.xy - uRes) / min(uRes.x, uRes.y);
-  // Original timing: real time, no slowdown.
-  float t = uTime;
+  // Slowed after original confirmation: 0.22x real time.
+  float t = uTime * 0.22;
   for (float i = 1.0; i < 10.0; i++) {
     uv.x += 0.6 / i * cos(i * 2.5 * uv.y + t);
     uv.y += 0.6 / i * cos(i * 1.5 * uv.x + t);
