@@ -26,7 +26,8 @@ a:hover { text-decoration-thickness: 2px; }
   height: 110%;
   margin: -5%;
   opacity: 1;
-  filter: blur(24px);
+  /* Reduced from 24px: less white bleed into black areas, still soft. */
+  filter: blur(16px);
 }
 .shader-veil {
   position: absolute;

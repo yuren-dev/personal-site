@@ -4,10 +4,13 @@ import { useEffect, useRef } from 'react'
  * Original shader confirmed by the user, now with slowdown + blur only:
  * nasana's "glowingMarblingBlack" on Shadertoy
  * (https://www.shadertoy.com/view/WtdXR8), slowed to 0.22x and blurred
- * in CSS. No opacity reduction, no white veil, white text and the black
- * marble colours are kept as confirmed. If WebGL is unavailable, or the
- * user prefers reduced motion, the page falls back to a static frame /
- * plain background.
+ * in CSS. Tuned after user feedback that black areas were not black
+ * enough and white areas were too large: brightness numerator 0.1 -> 0.055
+ * (narrower white lines, darker mid-tones) plus a 1.5 contrast curve
+ * (values below 1 get darker, white peaks stay white). No white veil,
+ * white text is kept. If WebGL is unavailable, or the user prefers
+ * reduced motion, the page falls back to a static frame / plain
+ * background.
  */
 
 const VERT = `
@@ -27,7 +30,8 @@ void main() {
     uv.x += 0.6 / i * cos(i * 2.5 * uv.y + t);
     uv.y += 0.6 / i * cos(i * 1.5 * uv.x + t);
   }
-  vec3 col = vec3(0.1) / abs(sin(t - uv.y - uv.x));
+  vec3 col = vec3(0.055) / abs(sin(t - uv.y - uv.x));
+  col = pow(col, vec3(1.5));
   gl_FragColor = vec4(col, 1.0);
 }
 `
