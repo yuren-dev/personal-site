@@ -114,21 +114,15 @@ h2 {
   text-decoration: none;
   color: inherit;
 }
-.project-mark {
+.project-icon {
   flex-shrink: 0;
   width: 48px;
   height: 48px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.35);
-  color: #fff;
-  font-weight: 700;
-  font-size: 18px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.6));
+  transition: transform 0.15s;
 }
-.projects a:hover .project-mark { border-color: #fff; }
+.projects a:hover .project-icon { transform: scale(1.06); }
 .project-text { display: flex; flex-direction: column; }
 .project-name { font-weight: 700; font-size: 17px; line-height: 1.4; color: #fff; }
 .project-desc { color: rgba(255, 255, 255, 0.85); font-size: 15px; line-height: 1.55; margin-top: 2px; }

@@ -37,14 +37,18 @@ const PROJECTS = [
     tag: 'sessiontail.com',
     desc: 'Agent session community for Codex and Claude Code: keep the whole session, not just the final code, with redaction on your device.',
     href: 'https://sessiontail.com/',
-    mark: 'S',
+    // Real mark from session-land: packages/web/src/app/icon.svg
+    // (abstract comet, dark palette #4a5cf0 for a black background).
+    icon: '/sessiontail-icon.svg',
   },
   {
     name: 'afk-vibe-flow',
     tag: 'github.com/yuren-dev/afk-vibe-flow',
     desc: 'An issue-driven Loop Engineering plugin for Codex that brings structured workflows, isolated execution, and auditable software delivery to vibe coding.',
     href: 'https://github.com/yuren-dev/afk-vibe-flow',
-    mark: 'A',
+    // Real mark from the repo: plugins/afk-vibe-flow/assets/icon.png
+    // (bright dark-variant, same artwork as logo-dark.png).
+    icon: '/afk-icon.png',
   },
 ]
 
@@ -111,9 +115,14 @@ export default function App() {
             {PROJECTS.map((p) => (
               <li key={p.name}>
                 <a href={p.href} target="_blank" rel="noreferrer">
-                  <span className="project-mark" aria-hidden="true">
-                    {p.mark}
-                  </span>
+                  <img
+                    className="project-icon"
+                    src={p.icon}
+                    alt=""
+                    aria-hidden="true"
+                    width="48"
+                    height="48"
+                  />
                   <span className="project-text">
                     <span className="project-name">{p.name}</span>
                     <span className="project-desc">{p.desc}</span>
