@@ -57,12 +57,12 @@ export default function App() {
           <img
             className="avatar"
             src="https://github.com/yuren-dev.png"
-            alt="Yuren Cheng"
+            alt="Yuren"
             width="72"
             height="72"
           />
           <div>
-            <h1>Yuren Cheng</h1>
+            <h1>Yuren</h1>
             <p className="subtitle">Building tools for AI coding agents</p>
           </div>
         </header>
@@ -125,7 +125,7 @@ export default function App() {
         </section>
 
         <footer>
-          <span>© {new Date().getFullYear()} Yuren Cheng</span>
+          <span>© {new Date().getFullYear()} Yuren</span>
           <span className="footer-credit">
             Background inspired by nasana’s glowingMarblingBlack
           </span>
