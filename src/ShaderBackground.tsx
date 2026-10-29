@@ -7,10 +7,13 @@ import { useEffect, useRef } from 'react'
  * in CSS. Tuned after user feedback that black areas were not black
  * enough and white areas were too large: brightness numerator 0.1 -> 0.055
  * (narrower white lines, darker mid-tones) plus a 1.5 contrast curve
- * (values below 1 get darker, white peaks stay white). No white veil,
- * white text is kept. If WebGL is unavailable, or the user prefers
- * reduced motion, the page falls back to a static frame / plain
- * background.
+ * (values below 1 get darker, white peaks stay white). Further tuned
+ * after user feedback that detail was too dense to feel soft (the
+ * original's high-frequency warp layers): warp iterations 9 -> 4,
+ * amplitude 0.6 -> 0.45, texture zoomed out by 0.8x, so veins are fewer,
+ * wider and larger. No white veil, white text is kept. If WebGL is
+ * unavailable, or the user prefers reduced motion, the page falls back
+ * to a static frame / plain background.
  */
 
 const VERT = `
@@ -24,11 +27,14 @@ uniform vec2 uRes;
 uniform float uTime;
 void main() {
   vec2 uv = (2.0 * gl_FragCoord.xy - uRes) / min(uRes.x, uRes.y);
+  // Zoom out so veins are larger and fewer across the screen.
+  uv *= 0.8;
   // Slowed after original confirmation: 0.22x real time.
   float t = uTime * 0.22;
-  for (float i = 1.0; i < 10.0; i++) {
-    uv.x += 0.6 / i * cos(i * 2.5 * uv.y + t);
-    uv.y += 0.6 / i * cos(i * 1.5 * uv.x + t);
+  // Cut high-frequency layers: 4 iterations instead of 9, lower amplitude.
+  for (float i = 1.0; i < 5.0; i++) {
+    uv.x += 0.45 / i * cos(i * 2.5 * uv.y + t);
+    uv.y += 0.45 / i * cos(i * 1.5 * uv.x + t);
   }
   vec3 col = vec3(0.055) / abs(sin(t - uv.y - uv.x));
   col = pow(col, vec3(1.5));
