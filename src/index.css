@@ -34,13 +34,17 @@ a:hover { text-decoration-thickness: 2px; }
   background: transparent;
 }
 
-/* Layering is intentional and verified: shader canvas sits at z-index 0,
-   content sits above it at z-index 1, canvas ignores pointer events.
-   Text was previously invisible because it was black on the black marble
-   background, not because it was covered. */
+/* Layering fix (2026-10-29): the shader layer must NOT live inside .page.
+   Previously ShaderBackground was a child of .page, and a positioned
+   fixed element (even at z-index 0) paints above a non-positioned <main>
+   in the same stacking context, so the opaque marble canvas covered the
+   text completely. Now the shader is a sibling of .page at the root, and
+   .column is itself positioned at z-index 1, so content is truly on top. */
 .page { position: relative; z-index: 1; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.9); }
 
 .column {
+  position: relative;
+  z-index: 1;
   max-width: 680px;
   margin: 0 auto;
   padding: 72px 24px 48px;

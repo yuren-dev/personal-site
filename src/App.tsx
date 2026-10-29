@@ -50,9 +50,10 @@ const PROJECTS = [
 
 export default function App() {
   return (
-    <div className="page">
+    <>
       <ShaderBackground />
-      <main className="column">
+      <div className="page">
+        <main className="column">
         <header className="hero">
           <img
             className="avatar"
@@ -130,7 +131,8 @@ export default function App() {
             Background inspired by nasana’s glowingMarblingBlack
           </span>
         </footer>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   )
 }
