@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react'
 
 /*
- * Faint backdrop, inspired by nasana's "glowingMarblingBlack" on Shadertoy
- * (https://www.shadertoy.com/view/WtdXR8). The marble warp is kept, but the
- * playback is slowed to about a fifth of real time, the canvas is rendered
- * at half resolution, and CSS blur + low opacity + a white veil keep it
- * firmly in the background. If WebGL is unavailable, or the user prefers
- * reduced motion, the page simply stays white.
+ * TEMPORARY original-fidelity build for user confirmation:
+ * nasana's "glowingMarblingBlack" on Shadertoy
+ * (https://www.shadertoy.com/view/WtdXR8) at full speed, full resolution,
+ * no blur, no opacity reduction, no white veil. The faint treatment
+ * (slowed + blurred + veiled) is deliberately removed here and will be
+ * re-applied only after the user confirms this matches the original.
+ * If WebGL is unavailable, or the user prefers reduced motion, the page
+ * falls back to a static frame / plain background.
  */
 
 const VERT = `
@@ -20,8 +22,8 @@ uniform vec2 uRes;
 uniform float uTime;
 void main() {
   vec2 uv = (2.0 * gl_FragCoord.xy - uRes) / min(uRes.x, uRes.y);
-  // Slow marble warp: the same cosine-warp idea, at 0.22x time.
-  float t = uTime * 0.22;
+  // Original timing: real time, no slowdown.
+  float t = uTime;
   for (float i = 1.0; i < 10.0; i++) {
     uv.x += 0.6 / i * cos(i * 2.5 * uv.y + t);
     uv.y += 0.6 / i * cos(i * 1.5 * uv.x + t);
@@ -90,9 +92,8 @@ export default function ShaderBackground() {
     let stopped = false
 
     const resize = () => {
-      // Half resolution on purpose: the blur below hides the softness,
-      // and it roughly quarters the GPU cost.
-      const dpr = 0.5
+      // Full device resolution for the original-fidelity check.
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
       canvas.width = Math.max(2, Math.floor(window.innerWidth * dpr))
       canvas.height = Math.max(2, Math.floor(window.innerHeight * dpr))
       gl.viewport(0, 0, canvas.width, canvas.height)
