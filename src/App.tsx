@@ -136,17 +136,6 @@ export default function App() {
 
         <footer>
           <span>© {new Date().getFullYear()} Yuren</span>
-          <span className="footer-credit">
-            Background inspired by{' '}
-            <a
-              href="https://x.com/nasana_x"
-              target="_blank"
-              rel="noreferrer"
-            >
-              @nasana_x
-            </a>
-            ’s glowingMarblingBlack
-          </span>
         </footer>
         </main>
       </div>
